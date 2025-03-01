@@ -1,10 +1,13 @@
 {
-  "name": "blanc-logger",
+  "name": "@yooseungmo/blanc-logger",
   "version": "1.0.0",
   "description": "Advanced Winston logger with TypeORM support & structured logging.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/yooseungmo/blanc-logger"
