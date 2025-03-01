@@ -1,10 +1,9 @@
 # Blanc Logger 
 
-[![npm version](https://img.shields.io/npm/v/blanc-logger.svg?style=flat)](https://www.npmjs.com/package/blanc-logger)
+[![npm version](https://img.shields.io/npm/v/blanc-logger.svg?style=flat&color=red)](https://www.npmjs.com/package/blanc-logger)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E=18.x-brightgreen?style=flat&logo=node.js)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-%3E=4.0-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/github/license/yooseungmo/blanc-logger?color=blue)](https://github.com/yooseungmo/blanc-logger/blob/main/LICENSE)
-
 
 > **Blanc Logger**는 NestJS 및 TypeORM을 위한 **고급 로깅 라이브러리**입니다.  
 > **Winston 기반**으로 콘솔/파일 로깅을 지원하며, **구조화된 JSON 포맷, SQL 하이라이팅, 모듈 기반 로깅**을 제공합니다.

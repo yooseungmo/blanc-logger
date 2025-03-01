@@ -5,6 +5,8 @@
     "target": "ES6",
     "declaration": true,
     "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src"]
 }
