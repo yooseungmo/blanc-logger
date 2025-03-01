@@ -1,0 +1,46 @@
+{
+  "name": "blanc-logger",
+  "version": "1.0.0",
+  "description": "Advanced Winston logger with TypeORM support & structured logging.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yooseungmo/blanc-logger"
+  },
+  "author": "Yoo SeungMo <topblade6@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "keywords": [
+    "winston",
+    "nestjs",
+    "nestjs-logger",
+    "logger",
+    "structured-logging",
+    "typeorm",
+    "log-formatter",
+    "log-rotation",
+    "logging",
+    "nestjs-logging"
+  ],
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "chalk": "^4.1.0",
+    "nest-winston": "^1.0.0",
+    "typeorm": "^0.3.20",
+    "uuid": "^9.0.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^28.0.0",
+    "typescript": "^4.0.0"
+  }
+}
