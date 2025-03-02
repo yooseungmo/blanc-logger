@@ -1,13 +1,10 @@
 {
-  "name": "@yooseungmo/blanc-logger",
-  "version": "1.0.0",
+  "name": "blanc-logger",
+  "version": "1.0.1",
   "description": "Advanced Winston logger with TypeORM support & structured logging.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/yooseungmo/blanc-logger"
@@ -33,6 +30,8 @@
   ],
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@yooseungmo/blanc-logger": "^1.0.0",
+    "blanc-logger": "^1.0.0",
     "chalk": "^4.1.0",
     "nest-winston": "^1.0.0",
     "typeorm": "^0.3.20",
