@@ -30,8 +30,6 @@
   ],
   "dependencies": {
     "@nestjs/common": "^9.0.0",
-    "@yooseungmo/blanc-logger": "^1.0.0",
-    "blanc-logger": "^1.0.0",
     "chalk": "^4.1.0",
     "nest-winston": "^1.0.0",
     "typeorm": "^0.3.20",
