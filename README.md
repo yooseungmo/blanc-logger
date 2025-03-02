@@ -60,7 +60,10 @@ import { TypeOrmBlancLogger } from 'blanc-logger';
 export class AppModule {}
 ```
 
-> **3. 모듈별 Custom Logger 적용 (`app.module.ts`)**
+> **3. (선택사항) 모듈별 Custom Logger 적용 (`app.module.ts`)**
+
+> _Nest의 **전역 로거(blancLogger)** 를 사용하는 경우 **별도의 DI 설정이 필요 없어요.**_       
+> _만약 특정 모듈에서 추가 기능을 사용하고 싶다면, 아래와 같이 **선택적으로 DI**를 적용할 수 있어요._
 
 ```typescript
 import { Module } from '@nestjs/common';
