@@ -1,14 +1,16 @@
 {
   "name": "blanc-logger",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Advanced Winston logger with TypeORM support & structured logging.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": ["dist"],  
   "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/index.cjs",
-    "types": "./dist/index.d.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "repository": {
     "type": "git",

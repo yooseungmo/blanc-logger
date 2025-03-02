@@ -1,0 +1,17 @@
+# 소스 코드
+src/
+
+# Rollup 설정 파일 등 빌드 스크립트
+rollup.config.js
+
+# tsconfig 파일들 (필요에 따라)
+tsconfig.json
+tsconfig.*.json
+
+# 기타 불필요한 파일들
+*.config.js
+*.ts
+
+# 자동완성 시 dist 숨김
+dist/**/*      # 하위 디렉토리 전체 배포 차단
+!dist/index.*  # index 파일만 허용
