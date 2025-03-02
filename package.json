@@ -1,9 +1,15 @@
 {
   "name": "blanc-logger",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Advanced Winston logger with TypeORM support & structured logging.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/yooseungmo/blanc-logger"
@@ -18,12 +24,8 @@
   "keywords": [
     "winston",
     "nestjs",
-    "nestjs-logger",
     "logger",
-    "structured-logging",
     "typeorm",
-    "log-formatter",
-    "log-rotation",
     "logging",
     "nestjs-logging"
   ],
