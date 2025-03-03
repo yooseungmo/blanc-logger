@@ -8,5 +8,5 @@ export { TypeOrmBlancLogger } from './logger/typeorm-blanc-logger';
 export { BlancLoggerMiddleware } from './middleware/blanc-logger.middleware';
 
 // Helper
-export * from './helper/sqlFormatter';
+export * from './helper/sql-formatter';
 export * from './helper/uuid';

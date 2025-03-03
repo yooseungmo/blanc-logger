@@ -6,10 +6,17 @@ export interface LoggingConfig {
   MAX_FILE_SIZE: string; // 단일 파일 최대 크기
 }
 
-export const LOGGING_CONFIG: LoggingConfig = {
-  LOG_DIR: 'logs', // 로그 파일 저장 디렉토리 (예: 'logs' 또는 '/var/logs')
-  CONSOLE_LOG_LEVEL: 'info', // 콘솔 로그 레벨 (예: 'debug', 'info', 'warn', 'error')
-  FILE_LOG_LEVEL: 'error', // 파일 로그 레벨
-  ROTATION_DAYS: '30d', // 로그 파일 보관 기간
-  MAX_FILE_SIZE: '20m', // 단일 파일 최대 크기
+const defaultLoggingConfig: LoggingConfig = {
+  LOG_DIR: 'logs', // 기본 로그 파일 저장 디렉토리
+  CONSOLE_LOG_LEVEL: 'info', // 기본 콘솔 로그 레벨
+  FILE_LOG_LEVEL: 'error', // 기본 파일 로그 레벨
+  ROTATION_DAYS: '30d', // 기본 로그 파일 보관 기간
+  MAX_FILE_SIZE: '20m', // 기본 단일 파일 최대 크기
 };
+
+export let LOGGING_CONFIG: LoggingConfig = { ...defaultLoggingConfig };
+
+// 유저가 원하는 값으로 오버라이드
+export function setLoggingConfig(userConfig: Partial<LoggingConfig>): void {
+  LOGGING_CONFIG = { ...defaultLoggingConfig, ...userConfig };
+}

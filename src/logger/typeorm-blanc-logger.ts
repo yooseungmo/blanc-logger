@@ -1,7 +1,7 @@
 import * as chalk from 'chalk';
 import { Logger, QueryRunner } from 'typeorm';
 import * as util from 'util';
-import { addQueryAnalysis, formatParameters, indent, sqlHighlighter } from '../helper/sqlFormatter';
+import { addQueryAnalysis, formatParameters, indent, sqlHighlighter } from '../helper/sql-formatter';
 import { blancLogger } from './blanc-logger';
 
 export class TypeOrmBlancLogger implements Logger {
