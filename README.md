@@ -111,7 +111,7 @@ logs/
 
 | Feature                                    | Description                                                             |
 |--------------------------------------------|-------------------------------------------------------------------------|
-| **다중 전송 로깅 (Multi-Transport Logging)** | - 콘솔 출력과 파일 저장을 동시에 지원<br>- 일정 크기(예: 20MB) 또는 일정 주기(예: 15일)에 따라 자동으로 로그 파일 회전<br>- 로그 파일 예시: `combined-YYYY-MM-DD.log`, `error-YYYY-MM-DD.log`, `exceptions-YYYY-MM-DD.log`, `rejections-YYYY-MM-DD.log` 등의 이름으로 날짜가 붙은 형식으로 저장 |
+| **다중 전송 로깅 (Multi-Transport Logging)** | - 콘솔 출력과 파일 저장을 동시에 지원<br>- 일정 크기(예: 20MB) 또는 일정 주기(예: 15일)에 따라 자동으로 로그 파일 회전<br>- 로그 파일 예시: `combined-YYYY-MM-DD.log`, `error-YYYY-MM-DD.log`, `exceptions-YYYY-MM-DD.log`, `rejections-YYYY-MM-DD.log`|
 | **구조화된 로그 출력 (Structured Logging)** | - UUIDv5를 사용해 고유 LogID 생성<br>- `{timestamp, level, message}` 형식의 표준 JSON 포맷으로 출력되어 외부 시스템 연동 용이 |
 | **모듈별 컨텍스트 추적 (Contextual Tracing)** | - `BlancLoggerMiddleware`를 활용하여 HTTP 요청에서 모듈명 자동 추출<br>- `[UserService → AuthModule → Subsystem]`과 같이 계층 구조로 표시 |
 | **동적 로그 레벨 관리 (Dynamic Log Levels)** | - 개발 및 운영 환경에 따라 `debug, verbose, info, warn, error` 로그 레벨을 실시간으로 조절 가능<br>- 필요한 정보만 선별 기록하여 로그의 가독성과 관리 효율성을 향상 |
@@ -119,25 +119,22 @@ logs/
 | **쿼리 성능 분석 (Query Analysis)** | - SQL 성능 저하 유발 패턴 자동 감지 (`SELECT *`, `JOIN 조건 누락` 등) |
 | **에러 진단 및 스택 추적 (Error Diagnostics)** | - 에러 발생 시 다중 스택 레이어와 추가 메타데이터를 포함하여 상세한 에러 로그 기록 |
 | **성능 모니터링 (Performance Monitoring)** | - HTTP 요청 처리 시간 및 `Slow Query`(예: 100ms) 경고 로그 생성<br>- 실행 계획(Explain Plan) 리포트 시각화  |
-| **커스터마이징 (Customization)** | - `logger.config.ts`파일을 통해 로그 저장 경로, 로그 레벨, 파일 크기, 회전 주기 등을 쉽게 조정 가능 |
+| **커스터마이징 (Customization)** | - `logger-config.yaml`파일을 통해 로그 저장 경로, 로그 레벨, 파일 크기, 회전 주기 등을 쉽게 조정 가능 |
 
 ---
 
 ## Configuration
 
 > Blanc Logger는 기본 설정을 제공하지만, 필요에 따라 **사용자 환경**에 맞게 커스터마이징 할 수 있습니다.  
-> 설정을 변경하려면 프로젝트에 `logger.config.ts` 파일을 생성하고 아래와 같이 `Override`할 수 있습니다.
+> 설정을 변경하려면 `프로젝트 루트`에 `logger-config.yaml` 파일을 생성하고 아래와 같이 `Override`할 수 있습니다.
 
-```typescript
-import { setLoggingConfig } from 'blanc-logger';
+```yaml
+LOG_DIR: logs            # 로그 파일 저장 경로 (기본: 프로젝트 루트/logs)
+CONSOLE_LOG_LEVEL: info  # 콘솔 출력 로그 레벨 (debug, info, warn, error)
+FILE_LOG_LEVEL: error    # 파일 출력 로그 레벨
+ROTATION_DAYS: 30d       # 로그 파일 보관 기간 (예: 30일)
+MAX_FILE_SIZE: 20m       # 단일 파일 최대 크기 (예: 20MB)
 
-setLoggingConfig({
-  LOG_DIR: 'logs',            // 로그 파일 저장 경로 (기본: 프로젝트 루트/logs)
-  CONSOLE_LOG_LEVEL: 'info',  // 콘솔 출력 로그 레벨 (debug, info, warn, error)
-  FILE_LOG_LEVEL: 'error',    // 파일 출력 로그 레벨
-  ROTATION_DAYS: '30d',       // 로그 파일 보관 기간 (예: 30일)
-  MAX_FILE_SIZE: '20m'        // 단일 파일 최대 크기 (예: 20MB)
-});
 ```
 ---
 
