@@ -1,11 +1,13 @@
 import * as chalk from 'chalk';
 
+/** 주어진 텍스트의 각 줄에 지정된 공백 수만큼 들여쓰기를 적용 */
 export const indent = (text: string, spaces: number = 4): string =>
   text
     .split('\n')
     .map((line) => ' '.repeat(spaces) + line)
     .join('\n');
 
+/** SQL 쿼리 문자열의 키워드, 숫자, 문자열 및 식별자에 색상 포맷을 적용하여 하이라이트 */
 export const sqlHighlighter = (sql: string): string => {
   const keywords = [
     'SELECT',
@@ -50,9 +52,11 @@ export const sqlHighlighter = (sql: string): string => {
     .join('');
 };
 
+/** SQL 쿼리의 파라미터 배열을 JSON 문자열로 변환하여 색상 포맷을 적용 */
 export const formatParameters = (params: unknown[]): string =>
   params.length > 0 ? chalk.hex('#2E8B57')(JSON.stringify(params)) : '';
 
+/** SQL 쿼리를 분석하여 성능 이슈가 발생할 수 있는 부분에 대한 경고 메시지를 반환 */
 export const addQueryAnalysis = (query: string): string => {
   const warnings: string[] = [];
   const simplified = query.toLowerCase().replace(/\s+/g, ' ');

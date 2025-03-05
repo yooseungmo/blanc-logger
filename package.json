@@ -1,7 +1,7 @@
 {
   "name": "blanc-logger",
-  "version": "1.0.9",
-  "description": "Advanced Winston logger for NestJS & TypeORM with structured logging (npm package).",
+  "version": "1.1.0",
+  "description": "Advanced Winston logger for NestJS & TypeORM with structured logging.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

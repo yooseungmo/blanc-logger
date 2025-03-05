@@ -118,7 +118,7 @@ logs/
 | **SQL 구문 하이라이팅 (SQL Syntax Highlighting)** | - SQL 쿼리의 키워드, 값, 테이블명을 색상 강조 및 들여쓰기로 구분<br>- 파라미터 값 컨텍스트 인식 강조 |
 | **쿼리 성능 분석 (Query Analysis)** | - SQL 성능 저하 유발 패턴 자동 감지 (`SELECT *`, `JOIN 조건 누락` 등) |
 | **에러 진단 및 스택 추적 (Error Diagnostics)** | - 에러 발생 시 다중 스택 레이어와 추가 메타데이터를 포함하여 상세한 에러 로그 기록 |
-| **성능 모니터링 (Performance Monitoring)** | - HTTP 요청 처리 시간 및 `Slow Query`(예: 100ms) 경고 로그 생성<br>- 실행 계획(Explain Plan) 리포트 시각화  |
+| **성능 모니터링 (Performance Monitoring)** | - HTTP 요청 처리 시간 및 `Slow Query`(예: 500ms) 경고 로그 생성<br>- 실행 계획(Explain Plan) 리포트 시각화  |
 | **커스터마이징 (Customization)** | - `logger-config.yaml`파일을 통해 로그 저장 경로, 로그 레벨, 파일 크기, 회전 주기 등을 쉽게 조정 가능 |
 
 ---
@@ -130,8 +130,8 @@ logs/
 
 ```yaml
 LOG_DIR: logs            # 로그 파일 저장 경로 (기본: 프로젝트 루트/logs)
-CONSOLE_LOG_LEVEL: info  # 콘솔 출력 로그 레벨 (debug, info, warn, error)
-FILE_LOG_LEVEL: error    # 파일 출력 로그 레벨
+CONSOLE_LOG_LEVEL: info  # 콘솔 출력 로그 레벨 (debug, verbose, info, warn, error)
+FILE_LOG_LEVEL: error    # 파일 출력 로그 레벨 (debug, verbose, info, warn, error)
 ROTATION_DAYS: 30d       # 로그 파일 보관 기간 (예: 30일)
 MAX_FILE_SIZE: 20m       # 단일 파일 최대 크기 (예: 20MB)
 
@@ -203,7 +203,7 @@ export class LoggingInterceptor implements NestInterceptor {
       tap(() => {
         const delay = Date.now() - startTime;
         const delayStr =
-          delay > 100 ? chalk.bold.red(`${delay}ms 🚨`) : chalk.magenta(`${delay}ms`);
+          delay > 500 ? chalk.bold.red(`${delay}ms 🚨`) : chalk.magenta(`${delay}ms`);
         const message = `Request processed: ${chalk.yellow(req.method)} ${chalk.green(
           decodedUrl,
         )} ${delayStr}`;
@@ -233,7 +233,7 @@ export class AppModule {}
 ```
 
 > **Console Output Log Example**         
-> _(응답 시간 초과 시 (예: 100ms)강조)_
+> _- 응답 시간 (예: 500ms) 초과 시 강조_
 
 <p align="left">
   <img src="https://github.com/user-attachments/assets/315ac55c-7f06-44b6-a4bb-66a465186dd3" alt="blanc-logger-output-log" width="600">
@@ -258,45 +258,53 @@ import {
 import { blancLogger } from 'blanc-logger';
 import { Request, Response } from 'express';
 
+interface ExceptionResponse {
+  status: number;
+  message: string;
+  stack?: string;
+}
+
+/** 예외 객체를 처리하여 상태, 메시지, 스택을 반환하는 함수 */
+const handleException = (exception: unknown, _request: Request): ExceptionResponse => {
+  if (exception instanceof HttpException) {
+    const status = exception.getStatus();
+    const res = exception.getResponse();
+    const message =
+      typeof res === 'object' && res !== null
+        ? (res as any).message ?? exception.message
+        : exception.message;
+    return {
+      status,
+      message: `HTTP Exception: ${message}`,
+      stack: exception instanceof Error ? exception.stack : '',
+    };
+  }
+  if (exception instanceof Error) {
+    const status = new InternalServerErrorException().getStatus();
+    return {
+      status,
+      message: `Unhandled exception: ${exception.message}`,
+      stack: exception.stack,
+    };
+  }
+  return { status: 500, message: 'Unknown error' };
+};
+
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const moduleName = (request as any).moduleName || 'Global';
 
-    let status: number;
-    let message: string;
+    const moduleName = (request as any)?.moduleName ?? 'Global';
+    const { status, message, stack } = handleException(exception, request);
 
-    if (exception instanceof HttpException) {
-      status = exception.getStatus();
-      const resObj = exception.getResponse();
-      message =
-        typeof resObj === 'object' && resObj !== null
-          ? (resObj as any).message || exception.message
-          : exception.message;
-      blancLogger.error(`HTTP Exception: ${message}`, {
-        moduleName,
-        path: request.url,
-        stack: exception instanceof Error ? exception.stack : '',
-      });
-    } else if (exception instanceof Error) {
-      status = new InternalServerErrorException().getStatus();
-      message = 'Internal Server Error';
-      blancLogger.error(`Unhandled exception: ${exception.message}`, {
-        moduleName,
-        path: request.url,
-        stack: exception.stack,
-      });
-    } else {
-      status = 500;
-      message = 'Unknown error';
-      blancLogger.error(`Unknown exception: ${JSON.stringify(exception)}`, {
-        moduleName,
-        path: request.url,
-      });
-    }
+    blancLogger.error(message, {
+      moduleName,
+      path: request.url,
+      stack,
+    });
 
     response.status(status).json({
       statusCode: status,
@@ -306,6 +314,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     });
   }
 }
+
 ```
 
 > **전역 필터로 적용하려면 AppModule에 아래와 같이 등록합니다**

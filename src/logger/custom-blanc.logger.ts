@@ -1,6 +1,7 @@
 import { LoggerService } from '@nestjs/common';
 import { blancLogger } from './blanc-logger';
 
+/** Nest의 LoggerService를 대체하여 blancLogger를 통해 로그를 기록하는 커스텀 로거 */
 export const customBlancLogger: LoggerService = {
   log: (message: unknown, context?: string): void =>
     blancLogger.log('info', message, { moduleName: context }),

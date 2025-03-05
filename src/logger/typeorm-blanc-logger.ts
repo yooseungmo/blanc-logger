@@ -5,6 +5,7 @@ import { addQueryAnalysis, formatParameters, indent, sqlHighlighter } from '../h
 import { blancLogger } from './blanc-logger';
 
 export class TypeOrmBlancLogger implements Logger {
+  /** SQL 쿼리를 포맷팅하여 강조된 문자열을 반환 */
   private formatQuery(query: string, params?: unknown[]): string {
     const highlightedQuery = sqlHighlighter(query);
     const indentedQuery = indent(highlightedQuery);
@@ -23,11 +24,13 @@ export class TypeOrmBlancLogger implements Logger {
       .join('\n');
   }
 
+  /** SQL 쿼리를 로그에 기록 */
   logQuery(query: string, parameters?: unknown[], queryRunner?: QueryRunner): void {
     const message = this.formatQuery(query, parameters);
     blancLogger.log('info', `[SQL Execute]\n${message}`);
   }
 
+  /** SQL 쿼리 실행 중 발생한 오류를 로그에 기록 */
   logQueryError(
     error: string | Error,
     query: string,
@@ -47,6 +50,7 @@ export class TypeOrmBlancLogger implements Logger {
     blancLogger.log('error', message);
   }
 
+  /** 느린 SQL 쿼리 실행을 경고 로그로 기록 */
   logQuerySlow(
     time: number,
     query: string,
@@ -70,6 +74,7 @@ export class TypeOrmBlancLogger implements Logger {
     blancLogger.log('warn', message);
   }
 
+  /** 스키마 빌드 관련 메시지를 로그에 기록 */
   logSchemaBuild(message: string, queryRunner?: QueryRunner): void {
     const schemaMessage = [
       chalk.dim('╔═ Schema Build ═════════════════════════════'),
@@ -79,6 +84,7 @@ export class TypeOrmBlancLogger implements Logger {
     blancLogger.log('info', schemaMessage);
   }
 
+  /** 데이터베이스 마이그레이션 관련 메시지를 로그에 기록 */
   logMigration(message: string, queryRunner?: QueryRunner): void {
     const migrationMessage = [
       chalk.dim('╔═ Database Migration ═════════════════════'),
@@ -88,6 +94,7 @@ export class TypeOrmBlancLogger implements Logger {
     blancLogger.log('info', migrationMessage);
   }
 
+  /** 지정된 레벨의 일반 로그 메시지를 기록 */
   log(level: 'log' | 'info' | 'warn', message: unknown, queryRunner?: QueryRunner): void {
     const header = chalk.dim(`╔═ TypeORM ${level.toUpperCase()} ═════════════════════`);
     const footer = chalk.dim('╚═════════════════════════════════════════════\n');

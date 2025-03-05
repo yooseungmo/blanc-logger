@@ -1,9 +1,6 @@
 # 소스 코드
 src/
 
-# Rollup 설정 파일 등 빌드 스크립트
-rollup.config.js
-
 # tsconfig 파일들 (필요에 따라)
 tsconfig.json
 tsconfig.*.json
